@@ -58,7 +58,7 @@ public class Inventario {
         "El inventario esta vacio");
         return;
         }
-
+        
         //Mostraremos todos los productos 
         StringBuilder msje = new StringBuilder("Inventario:\n\n");
         for (Producto p : inventario) {
@@ -67,7 +67,7 @@ public class Inventario {
         
         JOptionPane.showMessageDialog(null, msje.toString());
     }
-    
+
 
     //Metodo para mostrar productos a vencer en los proximos 7 dias
     public void mostrarProximosAVencer() {
@@ -131,7 +131,7 @@ public class Inventario {
         try {
             String fechatext = JOptionPane.showInputDialog(null, 
                     "Ingrese la fecha límite para eliminar productos\n" +
-                    "(ej. 01-01-2025)");
+                    "(ej. 01-01-25)");
             
             LocalDate fechaLimite = LocalDate.parse(fechatext, FORMATTER);
             PriorityQueue<Producto> nuevosProductos = new PriorityQueue<>();
@@ -155,7 +155,6 @@ public class Inventario {
     }
 
     public void mostrarMenu() {
-    
         while (true) { 
             int opc = Integer.parseInt(JOptionPane.showInputDialog(
                     "Escoja la acción a realizar:\n\n" +
@@ -163,19 +162,18 @@ public class Inventario {
                     "2 => Buscar un producto\n" +
                     "3 => Mostrar todos los productos\n" +
                     "4 => Eliminar productos\n" +
-                    "0 => Cerrar el programa"));
+                    "0 => Cerrar el programa\n"));
             procesarOpcion(opc);
         } 
         
     }
     
     private void procesarOpcion(int opc) {
-        Inventario act = new Inventario();
         switch (opc) {
-            case 1 -> act.agregarProductos();
-            case 2 -> act.buscarProducto();
-            case 3 -> act.mostrarInventario();
-            case 4 -> act.eliminarProductos();
+            case 1 -> this.agregarProductos();
+            case 2 -> this.buscarProducto();
+            case 3 -> this.mostrarInventario();
+            case 4 -> this.eliminarProductos();
             case 0 -> {
                 JOptionPane.showMessageDialog(null,
                         "Saliendo del sistema");

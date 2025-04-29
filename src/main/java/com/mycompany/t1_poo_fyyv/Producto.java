@@ -5,6 +5,7 @@
 package com.mycompany.t1_poo_fyyv;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -15,7 +16,9 @@ class Producto implements Comparable<Producto>{
     private String Nombre;
     private int Cantidad;
     private LocalDate Fecha;
-    //private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yy");
+
+    //Establecer el formato de la fecha para que se vea mas agradable
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yy");
 
     public Producto(String nombre, int cantidad, LocalDate fecha){
         this.Nombre = nombre;
@@ -51,4 +54,12 @@ class Producto implements Comparable<Producto>{
     public int compareTo(Producto otro) {
         return this.Fecha.compareTo(otro.Fecha);
     }
+
+    @Override
+    public String toString() {
+        return "Producto: " + Nombre + 
+            "\nCantidad: " + Cantidad + 
+            "\nFecha de Vencimiento: " + Fecha.format(FORMATTER);
+    }
+
 }

@@ -13,6 +13,7 @@ public class Main1{
 
     public static void main(String[] args) {
         Inventario inventario = new Inventario();
+        inventario.cargarDatosIniciales();
         inventario.mostrarMenu();
         
     }    
