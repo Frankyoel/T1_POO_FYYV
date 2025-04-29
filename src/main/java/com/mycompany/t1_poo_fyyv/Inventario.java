@@ -66,8 +66,10 @@ public class Inventario {
         }
         
         JOptionPane.showMessageDialog(null, msje.toString());
-    }
 
+        //Mostramos en otra ventana los productos a vencer
+        mostrarProximosAVencer();
+    }
 
     //Metodo para mostrar productos a vencer en los proximos 7 dias
     public void mostrarProximosAVencer() {
@@ -96,11 +98,13 @@ public class Inventario {
     //Metodo para buscar
     public void buscarProducto() {
         if (inventario.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "El inventario está vacío");
+            JOptionPane.showMessageDialog(null, 
+            "El inventario está vacío");
             return;
         }
 
-        String nombre = JOptionPane.showInputDialog(null, "Ingrese el nombre del producto a buscar");
+        String nombre = JOptionPane.showInputDialog(null, 
+        "Ingrese el nombre del producto a buscar");
         if (nombre == null || nombre.trim().isEmpty()) return;
 
         StringBuilder msje = new StringBuilder("Resultados de búsqueda:\n\n");
@@ -120,11 +124,11 @@ public class Inventario {
         JOptionPane.showMessageDialog(null, msje.toString());
     }
 
-
     //Metodo para eliminar producto
     public void eliminarProductos() {
         if (inventario.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "El inventario está vacío");
+            JOptionPane.showMessageDialog(null, 
+            "El inventario está vacío");
             return;
         }
 
@@ -150,10 +154,12 @@ public class Inventario {
             JOptionPane.showMessageDialog(null, 
                     "Se eliminaron " + eliminados + " productos vencidos");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error en formato de fecha");
+            JOptionPane.showMessageDialog(null, 
+            "Error en formato de fecha");
         }
     }
 
+    //Metodo para mostar opciones
     public void mostrarMenu() {
         while (true) { 
             int opc = Integer.parseInt(JOptionPane.showInputDialog(
@@ -162,10 +168,9 @@ public class Inventario {
                     "2 => Buscar un producto\n" +
                     "3 => Mostrar todos los productos\n" +
                     "4 => Eliminar productos\n" +
-                    "0 => Cerrar el programa\n"));
+                    "0 => Cerrar el programa\n "));                    
             procesarOpcion(opc);
-        } 
-        
+        }      
     }
     
     private void procesarOpcion(int opc) {
@@ -186,14 +191,11 @@ public class Inventario {
         }
     }
 
-
     public void cargarDatosIniciales() {
-        inventario.add(new Producto("Leche", 10, LocalDate.of(2025, 5, 1)));
-        inventario.add(new Producto("Pan", 20, LocalDate.of(2025, 4, 30)));
+        inventario.add(new Producto("Leche", 10, LocalDate.of(2025, 6, 1)));
+        inventario.add(new Producto("Pan", 20, LocalDate.of(2025, 5, 30)));
         inventario.add(new Producto("Queso", 15, LocalDate.of(2025, 5, 3)));
-        inventario.add(new Producto("Yogurt", 12, LocalDate.of(2025, 5, 5)));
+        inventario.add(new Producto("Yogurt", 12, LocalDate.of(2025, 6, 5)));
         inventario.add(new Producto("Jugo", 8, LocalDate.of(2025, 5, 2)));
-    }
-    
-   
+    }   
 }

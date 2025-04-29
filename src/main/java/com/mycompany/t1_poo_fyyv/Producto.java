@@ -58,8 +58,8 @@ class Producto implements Comparable<Producto>{
     @Override
     public String toString() {
         return "Producto: " + Nombre + 
-            "\nCantidad: " + Cantidad + 
-            "\nFecha de Vencimiento: " + Fecha.format(FORMATTER);
+                "\nCantidad: " + Cantidad + 
+                "\nFecha de Vencimiento: " + Fecha.format(FORMATTER);
     }
 
 }
