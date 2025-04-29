@@ -1,0 +1,209 @@
+package com.mycompany.t1_poo_fyyv;
+
+import java.time.LocalDate;
+import java.util.PriorityQueue;
+
+import javax.swing.JOptionPane;
+
+public class Acciones {
+    
+    private PriorityQueue<Producto> inventario = new PriorityQueue<>();
+    
+    public void agregarProductos(){
+        
+        //Agregamos el nombre, cantidad y fecha
+        String nombreprod = JOptionPane.showInputDialog(null,
+        "Ingrese el nombre del producto");
+        int cant = Integer.parseInt(JOptionPane.showInputDialog(null, 
+        "Ingrese cantidad del producto"));
+        //En el caso de la fecha, primero ingresara como texto
+        String fechatext = JOptionPane.showInputDialog(null, 
+        "Ingrese la fecha de vencimiento del producto "+
+        "\n  Recuerde que la feha debe tener el siguiente formato: "+
+        "\n  01-01-25");
+        //Luego con la clase LocalDate.parce la convertiremos en una fecha que 
+        //Pueda ser aceptada por el programa 
+        LocalDate fechaDate = LocalDate.parse(fechatext);
+
+        //Se añaden todos los datos al inventario
+        Producto product = new Producto(nombreprod, cant, fechaDate);
+        inventario.add(product);
+
+        JOptionPane.showMessageDialog(null, 
+        "El producto ha sido agregado con exito");
+
+    }
+
+
+
+    public void mostrarInventario(){
+
+        if(inventario.isEmpty()){
+            JOptionPane.showMessageDialog(null, 
+        "El inventario esta vacio");
+        }else {
+            //estoy provando otro metodo usando el String Builder
+            StringBuilder mensaje = new StringBuilder();
+            for (int i = 0; i < inventario.size(); i++) {
+                
+            }
+
+
+            //Mostraremos todos los productos 
+            
+            for(Producto producto : inventario){
+                JOptionPane.showMessageDialog(null,"Inventario\n\n"+ producto);
+            }
+
+            //mostraremos los productos proximos a vencer en los proximos 7 dias
+            LocalDate fechelim = LocalDate.now().plusDays(7);
+            for(Producto product : inventario){
+                if(!product.getFecha().isAfter(fechelim)){
+                    JOptionPane.showMessageDialog(null, product);
+                }
+                
+            }
+        }
+
+    }
+
+    public void BuscarProducto(){
+        //Buscaremos todos los productos segun su nombre
+        if(inventario.isEmpty()){
+            JOptionPane.showMessageDialog(null, 
+        "No hay ningun producto en el inventario");
+        }
+    }
+
+    public void EliminarProducto(){
+
+        //Eliminaremos los productos que segun la fecha que escojamos
+        LocalDate fecha = LocalDate.now();
+        
+        //En el caso de la fecha, primero ingresara como texto
+        String fechatext = JOptionPane.showInputDialog(null, 
+        "Escriba la fecha de vencimiento de los productos a eliminar"+
+        "\n  Recuerde que la feha debe tener el siguiente formato: "+
+        "\n  01-01-25");
+        //Luego con la clase LocalDate.parce la convertiremos en una fecha que 
+        //Pueda ser aceptada por el programa 
+        LocalDate fechaDate = LocalDate.parse(fechatext);
+        
+
+        Producto producto = inventario.poll();
+
+    }
+   
+}
+-----------------------------
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.t1_poo_fyyv;
+
+import java.time.LocalDate;
+/**
+ *
+ * @author YOVERA-2
+ */
+class Producto{
+
+    private String Nombre;
+    private int Cantidad;
+    private LocalDate Fecha;
+
+    public Producto(String nombre, int cantidad, LocalDate fecha){
+        this.Nombre = nombre;
+        this.Cantidad = cantidad;
+        this.Fecha = fecha;
+    }
+
+    public String getNombre() {
+        return Nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.Nombre = nombre;
+    }
+
+    public int getCantidad() {
+        return Cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.Cantidad = cantidad;
+    }
+
+    public LocalDate getFecha() {
+        return Fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.Fecha = fecha;
+    }    
+}
+
+-----------------------
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ */
+
+package com.mycompany.t1_poo_fyyv;
+
+import java.util.Scanner;
+
+import javax.swing.JOptionPane;
+
+/**
+ *
+ * @author YOVERA-2
+ */
+
+public class Main1{
+
+    public static void main(String[] args) {
+        Inventario inventario = new Inventario();
+        inventario.mostrarMenu();
+        
+        //System.out.println("");
+    }    
+}
+
+class Inventario{
+    //private final PriorityQueue<Producto> prodvence;
+    private final Scanner scanner = null;
+
+    public void mostrarMenu() {
+    
+        while (true) { 
+            int opc = Integer.parseInt(JOptionPane.showInputDialog(
+                    "Escoja la acción a realizar:\n\n" +
+                    "1 -> Registrar un producto\n" +
+                    "2 -> Buscar un producto\n" +
+                    "3 -> Mostrar todos los productos\n" +
+                    "4 -> Eliminar productos\n" +
+                    "0 -> Cerrar el programa"));
+            procesarOpcion(opc);
+        } 
+        
+    }
+    
+    private void procesarOpcion(int opc) {
+        Acciones act = new Acciones();
+        switch (opc) {
+            case 1: act.agregarProductos();  break;
+            case 2: act.BuscarProducto();   break;
+            case 3: act.mostrarInventario();  break;
+            case 4: act.EliminarProducto(); break;
+            case 0: JOptionPane.showMessageDialog(null, 
+            "Saliendo del sistema");
+                    System.exit(0);; break;
+            default:
+                JOptionPane.showMessageDialog(null, 
+                "Ingrese un numero valido");;
+        }
+    }
+
+}
+
