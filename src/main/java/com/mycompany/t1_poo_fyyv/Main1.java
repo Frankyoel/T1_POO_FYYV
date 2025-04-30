@@ -15,7 +15,6 @@ public class Main1{
         Inventario inventario = new Inventario();
         inventario.cargarDatosIniciales();
         inventario.mostrarMenu();
-        
     }    
 }
 

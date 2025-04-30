@@ -8,7 +8,6 @@ import javax.swing.JOptionPane;
 
 public class Inventario {
     
-    //
     private PriorityQueue<Producto> inventario = new PriorityQueue<>();
     
     //Para asignarle un formato a la fecha
@@ -29,7 +28,7 @@ public class Inventario {
         //En el caso de la fecha, primero ingresara como texto
         String fechatext = JOptionPane.showInputDialog(null, 
         "Ingrese la fecha de vencimiento del producto "+
-        "\n  Recuerde que la feha debe tener el siguiente formato: "+
+        "\n  Recuerde que la feha debe tener el siguiente formato:  "+
         "\n  01-01-25");
         //Luego con la clase LocalDate.parce la convertiremos en una fecha que 
         //Pueda ser aceptada por el programa 
@@ -79,17 +78,19 @@ public class Inventario {
             return;
         }
 
+        //Guardamos en una variable la fecha de 7 dias despues a la de hoy
         LocalDate fechaLimite = LocalDate.now().plusDays(7);
         StringBuilder msje = new StringBuilder("Productos próximos a vencer (7 días):\n\n");
-        
+
         for (Producto p : inventario) {
             if (!p.getFecha().isAfter(fechaLimite)) {
                 msje.append(p.toString()).append("\n\n");
             }
         }
-        
+            
         if (msje.length() == 0) {
-            JOptionPane.showMessageDialog(null, "No hay productos próximos a vencer");
+            JOptionPane.showMessageDialog(null, 
+            "No hay productos próximos a vencer");
         } else {
             JOptionPane.showMessageDialog(null, msje.toString());
         }
@@ -105,9 +106,11 @@ public class Inventario {
 
         String nombre = JOptionPane.showInputDialog(null, 
         "Ingrese el nombre del producto a buscar");
+        //Validaciones 
         if (nombre == null || nombre.trim().isEmpty()) return;
 
-        StringBuilder msje = new StringBuilder("Resultados de búsqueda:\n\n");
+        StringBuilder msje = new StringBuilder(
+        "Resultados de búsqueda:\n\n");
         boolean encontrado = false;
         
         for (Producto p : inventario) {
@@ -118,7 +121,8 @@ public class Inventario {
         }
         
         if (!encontrado) {
-            msje.append("No se encontró el producto: ").append(nombre);
+            msje.append(
+            "No se encontró el producto: ").append(nombre);
         }
         
         JOptionPane.showMessageDialog(null, msje.toString());
@@ -133,47 +137,73 @@ public class Inventario {
         }
 
         try {
-            String fechatext = JOptionPane.showInputDialog(null, 
-                    "Ingrese la fecha límite para eliminar productos\n" +
-                    "(ej. 01-01-25)");
+
+            //Para mostrar los productos de manera que podamos ver primero los 
+            //productos cerca a vencer usarmos una copia del inventario 
+            PriorityQueue<Producto> cInventario = new PriorityQueue<>(inventario);
+
+            //Mostraremos todos los productos 
+            StringBuilder msje = new StringBuilder("Inventario:\n\n");
+            while (!cInventario.isEmpty()) {
+                Producto p = cInventario.poll(); // Extrae en orden
+                msje.append(p.toString()).append("\n\n");
+            }
             
+            String fechatext = JOptionPane.showInputDialog(null, 
+            "Ingrese la fecha límite para eliminar productos\n" +
+            "(ej. 01-01-25)\n " +
+            "Tenga en cuenta que tambien se eliminaran todos los producto anteriores segun la fecha designada\n " +
+            msje); //Se mostraran los datos del inventario
+
+            //Validaciones 
+            if (fechatext == null || fechatext.trim().isEmpty()) return;
+
+            //Una vez que se tenga la fecha, se procedera a hacer un recorrido
+            //para buscar y eliminar los productos del inventario
             LocalDate fechaLimite = LocalDate.parse(fechatext, FORMATTER);
-            PriorityQueue<Producto> nuevosProductos = new PriorityQueue<>();
+            PriorityQueue<Producto> pVence = new PriorityQueue<>();
 
             int eliminados = 0;
             
             for (Producto p : inventario) {
                 if (p.getFecha().isAfter(fechaLimite)) {
-                    nuevosProductos.add(p);
+                    pVence.add(p);
                 } else {
                     eliminados++;
                 }
             }
             
-            inventario = nuevosProductos;
+            inventario = pVence;
             JOptionPane.showMessageDialog(null, 
                     "Se eliminaron " + eliminados + " productos vencidos");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, 
-            "Error en formato de fecha");
+            "Ocurrio un error \bIntente de nuevo");
         }
     }
 
     //Metodo para mostar opciones
     public void mostrarMenu() {
         while (true) { 
+            try {
+
             int opc = Integer.parseInt(JOptionPane.showInputDialog(
                     "Escoja la acción a realizar:\n\n" +
                     "1 => Registrar un producto\n" +
                     "2 => Buscar un producto\n" +
                     "3 => Mostrar todos los productos\n" +
                     "4 => Eliminar productos\n" +
-                    "0 => Cerrar el programa\n "));                    
-            procesarOpcion(opc);
+                    "0 => Cerrar el programa\n "));                   
+            ejecutarOpc(opc);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,
+             "Ingrese un número válido.");
+        }
         }      
     }
     
-    private void procesarOpcion(int opc) {
+    //metodo para procesar la opcion y desplegar las acciones del inventario
+    private void ejecutarOpc(int opc) {
         switch (opc) {
             case 1 -> this.agregarProductos();
             case 2 -> this.buscarProducto();
@@ -191,11 +221,12 @@ public class Inventario {
         }
     }
 
+    //Metodo para guardar algunos productos en el inventario
     public void cargarDatosIniciales() {
-        inventario.add(new Producto("Leche", 10, LocalDate.of(2025, 6, 1)));
-        inventario.add(new Producto("Pan", 20, LocalDate.of(2025, 5, 30)));
+        inventario.add(new Producto("Leche Gloria", 10, LocalDate.of(2025, 6, 30)));
+        inventario.add(new Producto("Galleta Soda", 20, LocalDate.of(2025, 5, 01)));
         inventario.add(new Producto("Queso", 15, LocalDate.of(2025, 5, 3)));
-        inventario.add(new Producto("Yogurt", 12, LocalDate.of(2025, 6, 5)));
-        inventario.add(new Producto("Jugo", 8, LocalDate.of(2025, 5, 2)));
+        inventario.add(new Producto("Yogurt Laive", 12, LocalDate.of(2025, 6, 5)));
+        inventario.add(new Producto("Rapiditas", 8, LocalDate.of(2025, 5, 2)));
     }   
 }
